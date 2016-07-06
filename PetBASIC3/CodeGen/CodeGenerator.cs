@@ -12,11 +12,25 @@ namespace PetBASIC3.CodeGen
     {
         #region LIBString
 
-        private const string lib = @"
+        private readonly Dictionary<string, string> _lib = new Dictionary<string, string>
+        {
+            {"print_str", PrintStr },
+            {"print_num", PrintNum },
+            {"mult_hl_de", MultHlDe },
+            {"div_bc_de", DivBcDe },
+            {"plot_xy", PlotXy + CalcYAddr },
+            {"input", Input }
+        };
+
+        private readonly HashSet<string> _activelib = new HashSet<string>();  
+
+        private const string Prologue = @"
 	ORG 32768
 	ld a, 2
 	call 5633
-	jp main
+	jp main";
+
+        private const string PrintStr = @"
 print_str:
 	ld a, (hl)
 	or a
@@ -29,10 +43,13 @@ print_str:
 	ld a, (hl)
 	or a
 	jp nz, .loop
-	ret
+	ret";
+        private const string PrintNum = @"
 print_num:
 	call $2D2B
-	jp $2DE3
+	jp $2DE3";
+
+        private const string MultHlDe = @"
 mult_hl_de:
 	ld b, h
     ld c, l
@@ -53,7 +70,9 @@ _mult_loop:
 	inc de
 	dec a
 	jr nz, _mult_loop
-	ret
+	ret";
+
+        private const string DivBcDe = @"
 div_bc_de:
 	ld a, b
 	ld hl, 0
@@ -67,7 +86,9 @@ _div_loop:
 	add hl, de
 	dec c
 	djnz _div_loop
-	ret
+	ret";
+
+        private const string PlotXy = @"
 plot_xy:
 	push af
 	push bc
@@ -97,7 +118,9 @@ _shift_done:
 	pop hl
 	pop bc
 	pop af
-	ret 
+	ret ";
+
+        private const string CalcYAddr = @"
 calc_y_addr:
 	ld hl,$4000
 	push af
@@ -120,7 +143,9 @@ calc_y_addr:
 	or h
 	ld h,a
 	pop af
-	ret
+	ret";
+
+        private const string Input = @"
 input:
 	ld de, 0
 .wait_key:
@@ -160,31 +185,38 @@ input:
 	ld b, d
 	ld c, e
 	ret
-buffer: DB 0,0
+buffer: DB 0,0";
+
+        private const string Entry = @"
 main:
 ";
         #endregion
 
-        private StringBuilder sb;
+        private StringBuilder _sb;
         private List<OP> _ops = new List<OP>(); 
 
         public CodeGenerator()
         {
-            sb = new StringBuilder(lib);
+            _sb = new StringBuilder(Prologue);
         }
 
         public void End()
         {
+            foreach (var l in _activelib)
+            {
+                _sb.Append(_lib[l]);
+            }
+            _sb.Append(Entry);
             foreach (var op in _ops)
             {
-                sb.AppendFormat("{0}\n", op);
+                _sb.AppendFormat("{0}\n", op);
             }
-            sb.AppendLine("\tjp $2D2B");
-            sb.AppendLine("vars: dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0");
+            _sb.AppendLine("\tjp $2D2B");
+            _sb.AppendLine("vars: dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0");
             for (var i = 0; i < StringNode.constants.Count; i++)
             {
                 var constant = StringNode.constants[i];
-                sb.AppendFormat("str{0}:\n\tdb {1},0\n", i, constant);
+                _sb.AppendFormat("str{0}:\n\tdb {1},0\n", i, constant);
             }
         }
 
@@ -193,7 +225,8 @@ main:
             _ops.Add(new OP(op));
         }
 
-        private const bool OptimizePushPop = false;
+        private const bool OptimizePushPop = true;
+        private const bool OptimizeLibrary = true;
 
         public void Emit(string op, string arg1)
         {
@@ -207,6 +240,14 @@ main:
                 _ops.Add(new OP("ld", "" + arg1[1], "" + push.Arg1[1]));
                 return;
             }
+
+            if (OptimizeLibrary && op == "call" && _lib.ContainsKey(arg1))
+            {
+                _activelib.Add(arg1);
+            }
+
+
+
             _ops.Add(new OP(op, arg1));
         }
 
@@ -220,7 +261,7 @@ main:
             _ops.Add(new OP("label", lbl));
         }
 
-        public override string ToString() => sb.ToString();
+        public override string ToString() => _sb.ToString();
 
         private class OP
         {

@@ -6,10 +6,12 @@ namespace PetBASIC3.AST
     {
         private readonly AstNode _dest;
         private readonly AstNode _expr;
-        public PokeNode(AstNode dest, AstNode expr)
+        private readonly bool _word;
+        public PokeNode(AstNode dest, AstNode expr, bool word)
         {
             _dest = dest;
             _expr = expr;
+            _word = word;
         }
 
         public override void CodeGen(CodeGenerator cg)
@@ -19,6 +21,11 @@ namespace PetBASIC3.AST
             cg.Emit("pop", "de");
             cg.Emit("pop", "hl");
             cg.Emit("ld", "(hl)", "e");
+            if (_word)
+            {
+                cg.Emit("inc", "hl");
+                cg.Emit("ld", "(hl)", "d");
+            }
         }
     }
 }

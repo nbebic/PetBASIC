@@ -111,11 +111,16 @@ namespace PetBASIC3
                 if (ParseLiteral("["))
                 {
                     AstNode n2;
+                    var word = false;
                     ParseExpr(out n2);
                     ParseLiteral("]");
+                    if (ParseLiteral("w"))
+                    {
+                        word = true;
+                    }
                     ParseLiteral("=");
                     ParseExpr(out n);
-                    node = new PokeNode(n2, n);
+                    node = new PokeNode(n2, n, word);
                     return true;
                 }
                 ParseWord(out s);
@@ -127,10 +132,11 @@ namespace PetBASIC3
             if (ParseLiteral("poke"))
             {
                 AstNode n, m;
+                bool w = ParseLiteral("word");
                 ParseExpr(out n);
                 ParseLiteral(",");
                 ParseExpr(out m);
-                node = new PokeNode(n, m);
+                node = new PokeNode(n, m, w);
                 return true;
             }
             if (ParseLiteral("halt"))
@@ -145,6 +151,25 @@ namespace PetBASIC3
                 ParseLiteral(",");
                 ParseExpr(out m);
                 node = new PointNode("set", n, m);
+                return true;
+            }
+            if (ParseLiteral("for"))
+            {
+                string v;
+                AstNode start, end;
+                ParseWord(out v);
+                ParseLiteral("=");
+                ParseExpr(out start);
+                ParseLiteral("to");
+                ParseExpr(out end);
+                node = new ForNode(v, start, end);
+                return true;
+            }
+            if (ParseLiteral("next"))
+            {
+                string v;
+                ParseWord(out v);
+                node = new NextNode(v);
                 return true;
             }
             throw new Exception("Expected stmt at " + Peek()?.Position + " found " + Peek()?.Value);

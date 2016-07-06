@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="AST\AstNode.cs" />
     <Compile Include="AST\ExprNode.cs" />
+    <Compile Include="AST\ForNode.cs" />
     <Compile Include="AST\FunNode.cs" />
     <Compile Include="AST\GoSubNode.cs" />
     <Compile Include="AST\GoToNode.cs" />

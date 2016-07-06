@@ -18,9 +18,17 @@ namespace PetBASIC3.AST
             {
                 if (node is ExprNode || node is NumNode || node is VarNode || node is FunNode)
                 {
-                    node.CodeGen(cg);
-                    cg.Emit("pop", "bc");
-                    cg.Emit("call", "print_num");
+                    if (node is VarNode && ((VarNode) node).Name.ToLower() == "nl")
+                    {
+                        cg.Emit("ld", "a", "13");
+                        cg.Emit("rst", "$10");
+                    }
+                    else
+                    {
+                        node.CodeGen(cg);
+                        cg.Emit("pop", "bc");
+                        cg.Emit("call", "print_num");
+                    }
                 }
                 else if (node is StringNode)
                 {
