@@ -50,6 +50,7 @@ namespace PetBASIC3.AST
                     cg.EmitByte(0x0f);
                     break;
                 case '-':
+                    cg.EmitByte(0x01);
                     cg.EmitByte(0x03);
                     break;
                 case '*':
@@ -57,6 +58,7 @@ namespace PetBASIC3.AST
                     break;
                 case '/':
                     cg.EmitByte(0x05);
+                    cg.EmitByte(0x27);
                     break;
             }
         }

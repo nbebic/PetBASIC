@@ -40,7 +40,7 @@ namespace PetBASIC3.AST.Commands
             cg.EndCalc();
 
             cg.Emit("call", "$2da2");
-            cg.Emit("ld", "(vars+" + _var.Address + ")", "hl");
+            cg.Emit("ld", "(vars+" + _var.Address + ")", "bc");
         }
     }
 }

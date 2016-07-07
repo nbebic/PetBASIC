@@ -41,16 +41,16 @@ namespace PetBASIC3.AST.Commands
 
         public override void CodeGenBasicalDo(CodeGenerator cg)
         {
-            _dest.CodeGenBasicalPre(cg);
             _expr.CodeGenBasicalPre(cg);
+            _dest.CodeGenBasicalPre(cg);
             cg.StartCalc();
-            _expr.CodeGenBasicalCalculate(cg);
             _dest.CodeGenBasicalCalculate(cg);
+            _expr.CodeGenBasicalCalculate(cg);
             cg.EndCalc();
             cg.Emit("call", "$2da2");
             cg.Emit("push", "bc");
-            cg.Emit("pop", "hl");
             cg.Emit("call", "$2da2");
+            cg.Emit("pop", "hl");
             cg.Emit("ld", "(hl)", "c");
             if (_word)
             {

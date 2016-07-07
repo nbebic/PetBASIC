@@ -22,10 +22,12 @@ namespace PetBASIC3.AST.Commands
         {
             _lhs.CodeGen(cg);
             _rhs.CodeGen(cg);
-            PartOfMagic(cg);
+            var v = PartOfMagic(cg);
+            _stmt.CodeGen(cg);
+            cg.Label(v);
         }
 
-        private void PartOfMagic(CodeGenerator cg)
+        private string PartOfMagic(CodeGenerator cg)
         {
             if (_relop == "<=" || _relop == ">")
             {
@@ -62,8 +64,7 @@ namespace PetBASIC3.AST.Commands
                     cg.Emit("jp", "z", nextlbl);
                     break;
             }
-            _stmt.CodeGen(cg);
-            cg.Label(nextlbl);
+            return nextlbl;
         }
 
         public override void CodeGenBasicalPre(CodeGenerator cg)
@@ -78,17 +79,19 @@ namespace PetBASIC3.AST.Commands
 
         public override void CodeGenBasicalDo(CodeGenerator cg)
         {
-            _lhs.CodeGenBasicalPre(cg);
             _rhs.CodeGenBasicalPre(cg);
+            _lhs.CodeGenBasicalPre(cg);
             cg.StartCalc();
-            _rhs.CodeGenBasicalCalculate(cg);
             _lhs.CodeGenBasicalCalculate(cg);
+            _rhs.CodeGenBasicalCalculate(cg);
             cg.EndCalc();
             cg.Emit("call", "$2da2");
             cg.Emit("push", "bc");
             cg.Emit("call", "$2da2");
             cg.Emit("push", "bc");
-            PartOfMagic(cg);
+            var v = PartOfMagic(cg);
+            _stmt.CodeGenBasicalDo(cg);
+            cg.Label(v);
         }
     }
 }

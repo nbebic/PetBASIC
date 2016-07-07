@@ -23,7 +23,8 @@ namespace PetBASIC3
             CodeGenerator cg = new CodeGenerator();
             foreach (var node in n)
             {
-                node.CodeGen(cg);
+                //node.CodeGen(cg);
+                node.CodeGenBasicalDo(cg);
             }
             cg.End();
             Console.Write(cg);

@@ -173,6 +173,7 @@ namespace PetBASIC3
                 node = new NextNode(v);
                 return true;
             }
+            
             throw new Exception("Expected stmt at " + Peek()?.Position + " found " + Peek()?.Value);
         }
 

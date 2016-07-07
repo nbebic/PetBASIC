@@ -268,8 +268,7 @@ main:
         {
             _ops.Add(new OP("label", lbl));
         }
-
-
+        
         public void StartCalc()
         {
             Emit("rst", "$0028");
@@ -277,7 +276,10 @@ main:
 
         public void EndCalc()
         {
-            EmitByte(0x38);
+            if (_ops.Last().Op == "rst" && _ops.Last().Arg1 == "$0028")
+                _ops.RemoveAt(_ops.Count - 1);
+            else
+                EmitByte(0x38);
         }
 
         public override string ToString() => _sb.ToString();
