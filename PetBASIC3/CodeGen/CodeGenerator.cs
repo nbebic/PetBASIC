@@ -245,10 +245,18 @@ main:
             {
                 _activelib.Add(arg1);
             }
-
-
-
+            
             _ops.Add(new OP(op, arg1));
+        }
+
+        public void EmitByte(int b)
+        {
+            _ops.Add(new OP("db", b.ToString()));
+        }
+
+        public void EmitWord(int w)
+        {
+            _ops.Add(new OP("dw", w.ToString()));
         }
 
         public void Emit(string op, string arg1, string arg2)
@@ -259,6 +267,17 @@ main:
         public void Label(string lbl)
         {
             _ops.Add(new OP("label", lbl));
+        }
+
+
+        public void StartCalc()
+        {
+            Emit("rst", "$0028");
+        }
+
+        public void EndCalc()
+        {
+            EmitByte(0x38);
         }
 
         public override string ToString() => _sb.ToString();

@@ -1,6 +1,6 @@
 using PetBASIC3.CodeGen;
 
-namespace PetBASIC3.AST
+namespace PetBASIC3.AST.Commands
 {
     public class IfNode : AstNode
     {
@@ -22,6 +22,11 @@ namespace PetBASIC3.AST
         {
             _lhs.CodeGen(cg);
             _rhs.CodeGen(cg);
+            PartOfMagic(cg);
+        }
+
+        private void PartOfMagic(CodeGenerator cg)
+        {
             if (_relop == "<=" || _relop == ">")
             {
                 cg.Emit("pop", "hl");
@@ -59,6 +64,31 @@ namespace PetBASIC3.AST
             }
             _stmt.CodeGen(cg);
             cg.Label(nextlbl);
+        }
+
+        public override void CodeGenBasicalPre(CodeGenerator cg)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void CodeGenBasicalCalculate(CodeGenerator cg)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void CodeGenBasicalDo(CodeGenerator cg)
+        {
+            _lhs.CodeGenBasicalPre(cg);
+            _rhs.CodeGenBasicalPre(cg);
+            cg.StartCalc();
+            _rhs.CodeGenBasicalCalculate(cg);
+            _lhs.CodeGenBasicalCalculate(cg);
+            cg.EndCalc();
+            cg.Emit("call", "$2da2");
+            cg.Emit("push", "bc");
+            cg.Emit("call", "$2da2");
+            cg.Emit("push", "bc");
+            PartOfMagic(cg);
         }
     }
 }

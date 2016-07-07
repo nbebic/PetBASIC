@@ -15,5 +15,20 @@ namespace PetBASIC3.AST
             cg.Emit("ld", "bc", "(vars+" + Address + ")");
             cg.Emit("push", "bc");
         }
+
+        public override void CodeGenBasicalPre(CodeGenerator cg)
+        {
+            cg.Emit("ld", "bc", "(vars+" + Address + ")");
+            cg.Emit("call", "$2d2b");
+        }
+
+        public override void CodeGenBasicalCalculate(CodeGenerator cg)
+        {
+        }
+
+        public override void CodeGenBasicalDo(CodeGenerator cg)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

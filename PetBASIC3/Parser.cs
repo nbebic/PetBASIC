@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PetBASIC3.AST;
+using PetBASIC3.AST.Commands;
 
 namespace PetBASIC3
 {
@@ -56,7 +57,7 @@ namespace PetBASIC3
         }
 
         public bool ParseStatement(out AstNode node)
-        {
+        { 
             if (ParseLiteral("print"))
             {
                 List<AstNode> nodes;

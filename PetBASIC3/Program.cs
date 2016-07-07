@@ -10,10 +10,9 @@ namespace PetBASIC3
     {
         public const string s =
 @"
-10 let i = 16384
-20 let [i]w = -1
-30 let i = i + 2
-40 if i <= 22527 then goto 20
+10 for i = 16384 to 22527
+20 poke i, 255
+30 next i
 ";
         static void Main(string[] args)
         {

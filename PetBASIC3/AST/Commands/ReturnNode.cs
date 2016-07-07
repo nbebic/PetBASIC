@@ -1,22 +1,12 @@
 ﻿using PetBASIC3.CodeGen;
 
-namespace PetBASIC3.AST
+namespace PetBASIC3.AST.Commands
 {
-    public class LineNode : AstNode
+    public class ReturnNode : AstNode
     {
-        private AstNode _stmt;
-        private int _line;
-
-        public LineNode(AstNode stmt, int line)
-        {
-            _stmt = stmt;
-            _line = line;
-        }
-
         public override void CodeGen(CodeGenerator cg)
         {
-            cg.Label("line" + _line);
-            _stmt.CodeGen(cg);
+            cg.Emit("ret");
         }
 
         public override void CodeGenBasicalPre(CodeGenerator cg)
@@ -31,8 +21,7 @@ namespace PetBASIC3.AST
 
         public override void CodeGenBasicalDo(CodeGenerator cg)
         {
-            cg.Label("line" + _line);
-            _stmt.CodeGenBasicalDo(cg);
+            cg.Emit("ret");
         }
     }
 }

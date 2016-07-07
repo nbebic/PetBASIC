@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PetBASIC3.CodeGen;
 
-namespace PetBASIC3.AST
+namespace PetBASIC3.AST.Commands
 {
     class ForNode : AstNode
     {
@@ -49,6 +46,21 @@ namespace PetBASIC3.AST
                 gen.Label("forn" + i);
             });
         }
+
+        public override void CodeGenBasicalPre(CodeGenerator cg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void CodeGenBasicalCalculate(CodeGenerator cg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void CodeGenBasicalDo(CodeGenerator cg)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
@@ -66,6 +78,21 @@ namespace PetBASIC3.AST
             if (!ForNode.ForActs.ContainsKey(_v))
                 throw new Exception("NEXT " + _v + " before corresponding FOR");
             ForNode.ForActs[_v](cg, _i++);
+        }
+
+        public override void CodeGenBasicalPre(CodeGenerator cg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void CodeGenBasicalCalculate(CodeGenerator cg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void CodeGenBasicalDo(CodeGenerator cg)
+        {
+            throw new NotImplementedException();
         }
     }
 }

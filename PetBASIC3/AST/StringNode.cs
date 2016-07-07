@@ -18,5 +18,19 @@ namespace PetBASIC3.AST
             constants.Add(value);
         }
         public override void CodeGen(CodeGenerator cg) { }
+        public override void CodeGenBasicalPre(CodeGenerator cg)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void CodeGenBasicalCalculate(CodeGenerator cg)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void CodeGenBasicalDo(CodeGenerator cg)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

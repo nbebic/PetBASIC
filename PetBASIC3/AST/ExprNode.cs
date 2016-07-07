@@ -41,5 +41,35 @@ namespace PetBASIC3.AST
             }
             cg.Emit("push", "hl");
         }
+
+        public override void CodeGenBasicalCalculate(CodeGenerator cg)
+        {
+            switch (_op)
+            {
+                case '+':
+                    cg.EmitByte(0x0f);
+                    break;
+                case '-':
+                    cg.EmitByte(0x03);
+                    break;
+                case '*':
+                    cg.EmitByte(0x04);
+                    break;
+                case '/':
+                    cg.EmitByte(0x05);
+                    break;
+            }
+        }
+
+        public override void CodeGenBasicalDo(CodeGenerator cg)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void CodeGenBasicalPre(CodeGenerator cg)
+        {
+            _lhs.CodeGenBasicalPre(cg);
+            _rhs.CodeGenBasicalPre(cg);
+        }
     }
 }

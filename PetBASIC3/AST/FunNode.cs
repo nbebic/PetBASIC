@@ -96,5 +96,20 @@ namespace PetBASIC3.AST
                     break;
             }
         }
+
+        public override void CodeGenBasicalPre(CodeGenerator cg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void CodeGenBasicalCalculate(CodeGenerator cg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void CodeGenBasicalDo(CodeGenerator cg)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -45,20 +45,20 @@
   <ItemGroup>
     <Compile Include="AST\AstNode.cs" />
     <Compile Include="AST\ExprNode.cs" />
-    <Compile Include="AST\ForNode.cs" />
+    <Compile Include="AST\Commands\ForNode.cs" />
     <Compile Include="AST\FunNode.cs" />
-    <Compile Include="AST\GoSubNode.cs" />
-    <Compile Include="AST\GoToNode.cs" />
-    <Compile Include="AST\HaltNode.cs" />
-    <Compile Include="AST\IfNode.cs" />
-    <Compile Include="AST\InputNode.cs" />
-    <Compile Include="AST\LetNode.cs" />
+    <Compile Include="AST\Commands\GoSubNode.cs" />
+    <Compile Include="AST\Commands\GoToNode.cs" />
+    <Compile Include="AST\Commands\HaltNode.cs" />
+    <Compile Include="AST\Commands\IfNode.cs" />
+    <Compile Include="AST\Commands\InputNode.cs" />
+    <Compile Include="AST\Commands\LetNode.cs" />
     <Compile Include="AST\LineNode.cs" />
     <Compile Include="AST\NumNode.cs" />
-    <Compile Include="AST\PointNode.cs" />
-    <Compile Include="AST\PokeNode.cs" />
-    <Compile Include="AST\PrintNode.cs" />
-    <Compile Include="AST\ReturnNode.cs" />
+    <Compile Include="AST\Commands\PointNode.cs" />
+    <Compile Include="AST\Commands\PokeNode.cs" />
+    <Compile Include="AST\Commands\PrintNode.cs" />
+    <Compile Include="AST\Commands\ReturnNode.cs" />
     <Compile Include="AST\StringNode.cs" />
     <Compile Include="AST\VarNode.cs" />
     <Compile Include="CodeGen\CodeGenerator.cs" />
@@ -70,6 +70,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="data.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
