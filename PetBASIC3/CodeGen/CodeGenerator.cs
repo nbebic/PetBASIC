@@ -269,9 +269,14 @@ main:
             _ops.Add(new OP("label", lbl));
         }
         
-        public void StartCalc()
+        public void StartCalc(byte b = 255)
         {
             Emit("rst", "$0028");
+            if (b != 255)
+            {
+                Emit("ld", "b", b.ToString());
+                EmitByte(0x3b);
+            }
         }
 
         public void EndCalc()

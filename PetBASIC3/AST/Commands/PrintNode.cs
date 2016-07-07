@@ -81,8 +81,7 @@ namespace PetBASIC3.AST.Commands
                         cg.StartCalc();
                         node.CodeGenBasicalCalculate(cg);
                         cg.EndCalc();
-                        cg.Emit("call", "$2da2");
-                        cg.Emit("call", "print_num");
+                        cg.Emit("call", "$2DE3");
                     }
                 }
                 else if (node is StringNode)

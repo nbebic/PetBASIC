@@ -44,6 +44,8 @@ namespace PetBASIC3.AST
 
         public override void CodeGenBasicalCalculate(CodeGenerator cg)
         {
+            _lhs.CodeGenBasicalCalculate(cg);
+            _rhs.CodeGenBasicalCalculate(cg);
             switch (_op)
             {
                 case '+':

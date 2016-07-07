@@ -10,8 +10,8 @@ namespace PetBASIC3
     {
         public const string s =
 @"
-10 for i = 16384 to 22527
-20 poke i, 255
+10 for i = -5 to 5
+20 print i
 30 next i
 ";
         static void Main(string[] args)
