@@ -10,9 +10,13 @@ namespace PetBASIC3
     {
         public const string s =
 @"
-10 for i = -5 to 5
-20 print i
-30 next i
+5 let r = 0
+10 for i = -100 to 100
+20 for j = -100 to 100
+30 if i*i + j*j <= 10000 then let r = r + 1
+40 next j
+50 next i
+60 print r
 ";
         static void Main(string[] args)
         {

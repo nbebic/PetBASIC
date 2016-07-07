@@ -30,8 +30,8 @@ namespace PetBASIC3.AST.Commands
             {
                 _end.CodeGen(gen);
                 _v.CodeGen(gen);
-                // bc = v
-                // hl = end
+                // bc = end
+                // hl = v
                 gen.Emit("pop", "hl");
                 gen.Emit("pop", "bc");
                 gen.Emit("or", "a");
@@ -74,20 +74,14 @@ namespace PetBASIC3.AST.Commands
                 gen.StartCalc();
                 _v.CodeGenBasicalCalculate(gen);
                 _end.CodeGenBasicalCalculate(gen);
+                gen.EmitByte(0x03);
+                gen.EmitByte(0x37);
                 gen.EndCalc();
-                // bc = v
-                // hl = end
-
+                // bc = end
+                // hl = v
                 gen.Emit("call", "$2da2");
-                gen.Emit("push", "bc");
-                gen.Emit("call", "$2da2");
-                gen.Emit("pop", "hl");
-
-                gen.Emit("or", "a");
-                // while (v <= end) <=> while !(end < v)
-                // end - v; jp m, next <=> if (end < v) break;
-                gen.Emit("sbc", "hl", "bc");
-                gen.Emit("jp", "p", "forn" + i);
+                gen.Emit("ld", "a", "c");
+                gen.Emit("jp", "z", "forn" + i);
                 gen.Emit("ld", "hl", "(vars+" + _v.Address + ")");
                 gen.Emit("inc", "hl");
                 gen.Emit("ld", "(vars+" + _v.Address + ")", "hl");
