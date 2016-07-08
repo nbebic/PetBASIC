@@ -34,7 +34,9 @@ namespace PetBASIC3.AST
                     cg.Emit("call", "mult_hl_de");
                     break;
                 case '/':
-                    cg.Emit("call", "div_bc_de");
+                    cg.Emit("ld", "a", "h");
+                    cg.Emit("ld", "c", "l");
+                    cg.Emit("call", "div_ac_de");
                     cg.Emit("ld", "h", "a");
                     cg.Emit("ld", "l", "c");
                     break;

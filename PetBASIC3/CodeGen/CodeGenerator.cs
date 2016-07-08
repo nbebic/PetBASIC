@@ -17,7 +17,7 @@ namespace PetBASIC3.CodeGen
             {"print_str", PrintStr },
             {"print_num", PrintNum },
             {"mult_hl_de", MultHlDe },
-            {"div_bc_de", DivBcDe },
+            {"div_ac_de", DivAcDe },
             {"plot_xy", PlotXy + CalcYAddr },
             {"input", Input }
         };
@@ -72,21 +72,20 @@ _mult_loop:
 	jr nz, _mult_loop
 	ret";
 
-        private const string DivBcDe = @"
-div_bc_de:
-	ld a, b
-	ld hl, 0
-	ld b, 16
-_div_loop:
-	sll c
-	rla
-	adc hl, hl
-	sbc hl, de
-	jr nc, $+4
-	add hl, de
-	dec c
-	djnz _div_loop
-	ret";
+        private const string DivAcDe = @"
+div_ac_de:
+   ld hl, 0
+   ld b, 16
+_loop:
+   sll c
+   rla
+   adc hl, hl
+   sbc hl, de
+   jr nc, $+4
+   add hl, de
+   dec c
+   djnz _loop
+   ret";
 
         private const string PlotXy = @"
 plot_xy:

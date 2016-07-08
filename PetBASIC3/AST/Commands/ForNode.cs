@@ -59,29 +59,24 @@ namespace PetBASIC3.AST.Commands
 
         public override void CodeGenBasicalDo(CodeGenerator cg)
         {
-            _start.CodeGenBasicalPre(cg);
-            cg.StartCalc();
-            _start.CodeGenBasicalCalculate(cg);
-            cg.EndCalc();
-            cg.Emit("call", "$2da2");
-            cg.Emit("ld", "(vars+" + _v.Address + ")", "bc");
+            _start.CodeGen(cg);
+            cg.Emit("pop", "hl");
+            cg.Emit("ld", "(vars+" + _v.Address + ")", "hl");
             var cf = _curFor++;
             cg.Label("for" + cf);
             ForActs.Add(_v.Name, (gen, i) =>
             {
-                _end.CodeGenBasicalPre(gen);
-                _v.CodeGenBasicalPre(gen);
-                gen.StartCalc();
-                _v.CodeGenBasicalCalculate(gen);
-                _end.CodeGenBasicalCalculate(gen);
-                gen.EmitByte(0x03);
-                gen.EmitByte(0x37);
-                gen.EndCalc();
+                _end.CodeGen(gen);
+                _v.CodeGen(gen);
                 // bc = end
                 // hl = v
-                gen.Emit("call", "$2da2");
-                gen.Emit("ld", "a", "c");
-                gen.Emit("jp", "z", "forn" + i);
+                gen.Emit("pop", "hl");
+                gen.Emit("pop", "bc");
+                gen.Emit("or", "a");
+                // while (v <= end) <=> while !(end < v)
+                // end - v; jp m, next <=> if (end < v) break;
+                gen.Emit("sbc", "hl", "bc");
+                gen.Emit("jp", "p", "forn" + i);
                 gen.Emit("ld", "hl", "(vars+" + _v.Address + ")");
                 gen.Emit("inc", "hl");
                 gen.Emit("ld", "(vars+" + _v.Address + ")", "hl");
