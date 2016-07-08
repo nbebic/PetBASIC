@@ -10,9 +10,8 @@ namespace PetBASIC3
     {
         public const string s =
 @"
-5 let n = 12
+5 let n = 29303
 10 for i = 2 to n-1
-15 print i, nl
 20 if n = (n/i)*i then goto 200
 30 next i
 40 print ""prime""
