@@ -321,6 +321,7 @@ namespace PetBASIC3
             Next();
             return true;
         }
+
         private bool ParseNum(out AstNode node)
         {
             if (Peek()?.Type == TokenType.Number)

@@ -10,13 +10,13 @@ namespace PetBASIC3
     {
         public const string s =
 @"
-5 let n = 29303
-10 for i = 2 to n-1
-20 if n = (n/i)*i then goto 200
-30 next i
-40 print ""prime""
-50 return
-200 print i, "" not prime""
+5 let r = 0
+10 for i = 0 to 100
+20 for j = 1 to 100
+30 if i*i + j*j <= 10000 then let r = r + 1
+40 next j
+50 next i
+60 print r * 4
 ";
         static void Main(string[] args)
         {
@@ -27,8 +27,9 @@ namespace PetBASIC3
             CodeGenerator cg = new CodeGenerator();
             foreach (var node in n)
             {
-                //node.CodeGen(cg);
+                node.CodeGen(cg);/*
                 node.CodeGenBasicalDo(cg);
+                //*/
             }
             cg.End();
             Console.Write(cg);
